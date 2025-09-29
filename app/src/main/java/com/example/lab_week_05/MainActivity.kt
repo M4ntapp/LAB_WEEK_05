@@ -33,11 +33,9 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.api_response)
     }
 
-
     private val imageResultView: ImageView by lazy {
         findViewById(R.id.image_result)
     }
-
 
     private val imageLoader: ImageLoader by lazy {
         GlideLoader(this)
@@ -70,17 +68,23 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val imageList = response.body()
-                    val firstImageUrl = imageList?.firstOrNull()?.imageUrl.orEmpty()
+                    val firstImage = imageList?.firstOrNull()
 
+                    // ✅ ambil breed (kalau kosong -> "Unknown")
+                    val breedName = firstImage?.breeds?.firstOrNull()?.name ?: "Unknown"
 
+                    // ✅ ambil URL gambar
+                    val firstImageUrl = firstImage?.imageUrl.orEmpty()
+
+                    // ✅ load gambar ke ImageView
                     if (firstImageUrl.isNotBlank()) {
                         imageLoader.loadImage(firstImageUrl, imageResultView)
                     } else {
                         Log.d(MAIN_ACTIVITY, "Missing image URL")
                     }
 
-
-                    apiResponseView.text = getString(R.string.image_placeholder, firstImageUrl)
+                    // ✅ tampilkan nama breed, bukan URL lagi
+                    apiResponseView.text = getString(R.string.image_placeholder, breedName)
                 } else {
                     Log.e(
                         MAIN_ACTIVITY,
