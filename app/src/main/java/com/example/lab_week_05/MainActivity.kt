@@ -70,20 +70,20 @@ class MainActivity : AppCompatActivity() {
                     val imageList = response.body()
                     val firstImage = imageList?.firstOrNull()
 
-                    // ✅ ambil breed (kalau kosong -> "Unknown")
+
                     val breedName = firstImage?.breeds?.firstOrNull()?.name ?: "Unknown"
 
-                    // ✅ ambil URL gambar
+
                     val firstImageUrl = firstImage?.imageUrl.orEmpty()
 
-                    // ✅ load gambar ke ImageView
+
                     if (firstImageUrl.isNotBlank()) {
                         imageLoader.loadImage(firstImageUrl, imageResultView)
                     } else {
                         Log.d(MAIN_ACTIVITY, "Missing image URL")
                     }
 
-                    // ✅ tampilkan nama breed, bukan URL lagi
+
                     apiResponseView.text = getString(R.string.image_placeholder, breedName)
                 } else {
                     Log.e(
